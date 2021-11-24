@@ -1,11 +1,10 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
-import styles from '../styles/Home.module.css'
-import slugify from 'slugify'
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+import styles from "../styles/Home.module.css";
 
-const Home: NextPage = ({pokemons}: any) => {
+const Home: NextPage = ({ pokemons }: any) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -15,20 +14,20 @@ const Home: NextPage = ({pokemons}: any) => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Red Pokemons from an api
-        </h1>
+        <h1 className={styles.title}>Red Pokemons from an api</h1>
 
-      <ul>
-        {pokemons && pokemons.map((pokemon: any) => {
-          return (
-            <li key={pokemon.name}>
-              <Link href={encodeURIComponent(pokemon.name)}>{pokemon.name}</Link>
-            </li>
-          )
-        })}
-      </ul>
-
+        <ul>
+          {pokemons &&
+            pokemons.map((pokemon: any) => {
+              return (
+                <li key={pokemon.name}>
+                  <Link href={encodeURIComponent(pokemon.name)}>
+                    {pokemon.name}
+                  </Link>
+                </li>
+              );
+            })}
+        </ul>
       </main>
 
       <footer className={styles.footer}>
@@ -37,28 +36,28 @@ const Home: NextPage = ({pokemons}: any) => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
 export async function getStaticProps() {
   // Call an external API endpoint to get posts
-  const res = await fetch('https://pokeapi.co/api/v2/pokemon-color/blue')
-  const redPokemons = await res.json()
+  const res = await fetch("https://pokeapi.co/api/v2/pokemon-color/blue");
+  const redPokemons = await res.json();
 
   // By returning { props: { posts } }, the Blog component
   // will receive `posts` as a prop at build time
   return {
     props: {
-      pokemons: redPokemons.pokemon_species
+      pokemons: redPokemons.pokemon_species,
     },
-  }
+  };
 }
 
-export default Home
+export default Home;

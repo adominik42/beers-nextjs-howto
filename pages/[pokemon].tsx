@@ -1,8 +1,8 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
-import styles from '../styles/Home.module.css'
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+import styles from "../styles/Home.module.css";
 
 const Pokemon: NextPage = (props: any) => {
   return (
@@ -14,7 +14,7 @@ const Pokemon: NextPage = (props: any) => {
       </Head>
 
       <main className={styles.main}>
-        <h1>{props.pokemon?.name ?? 'Not found, please come back later'}</h1>
+        <h1>{props.pokemon?.name ?? "Not found, please come back later"}</h1>
         {props.pokemon?.sprites && (
           <Image
             src={props.pokemon.sprites.front_default}
@@ -24,8 +24,7 @@ const Pokemon: NextPage = (props: any) => {
           />
         )}
 
-    
-        <Link href='/'>Back</Link>
+        <Link href="/">Back</Link>
       </main>
 
       <footer className={styles.footer}>
@@ -34,59 +33,63 @@ const Pokemon: NextPage = (props: any) => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
 export async function getStaticPaths() {
-    const res = await fetch('https://pokeapi.co/api/v2/pokemon-color/blue')
-    const pokemons = await res.json()
+  const res = await fetch("https://pokeapi.co/api/v2/pokemon-color/blue");
+  const pokemons = await res.json();
 
-    const paths = pokemons.pokemon_species.map(((pokemonData: any) => ({
-      params: { pokemon: encodeURIComponent(pokemonData.name)}
-    })))
+  const paths = pokemons.pokemon_species.map((pokemonData: any) => ({
+    params: { pokemon: encodeURIComponent(pokemonData.name) },
+  }));
 
-    return { paths, fallback: false }
-  }
+  return { paths, fallback: "blocking" };
+}
 
 function sleep(ms = 1000) {
-  return new Promise((res) => setTimeout(res, ms))
+  return new Promise((res) => setTimeout(res, ms));
 }
 
 export async function avoidRateLimit() {
-  await sleep()
+  await sleep();
 }
 
 export async function getStaticProps(props: any) {
   // await avoidRateLimit()
-  const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${decodeURIComponent(props.params.pokemon)}`)
+  const res = await fetch(
+    `https://pokeapi.co/api/v2/pokemon/${decodeURIComponent(
+      props.params.pokemon
+    )}`
+  );
   // await avoidRateLimit()
 
   try {
-    const pokemon = await res.json()
+    const pokemon = await res.json();
     return {
       props: {
-        pokemon
+        pokemon,
       },
-    }
+    };
   } catch (error) {
-    console.log('--------------DEBUG---------------')
-    console.log(res)
-    console.log(error)
-    console.log('--------------DEBUG---------------')
+    console.log("--------------DEBUG---------------");
+    console.log(res);
+    console.log(error);
+    console.log("--------------DEBUG---------------");
   }
 
   return {
     props: {
-      pokemon: {}
-    }
-  }
+      pokemon: {},
+    },
+  };
 }
 
-export default Pokemon
+export default Pokemon;
